@@ -1,20 +1,16 @@
 #pragma once
 
-// Direct3Dのライブラリを使用できるようにする
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+#include "DirectX.h"
 
-// Direct3Dの型・クラス・関数などを呼べるようにする
-#include <d3d11.h>
-#include <d3dcompiler.h>
+class Texture;
 
-// DirectXMath(数学ライブラリ)を使用できるようにする
-#include <DirectXMath.h>
+// 2D用頂点構造体
+struct VertexType2D
+{
+	DirectX::XMFLOAT3 Pos;	// 座標
+	DirectX::XMFLOAT2 UV;	// UV座標
+};
 
-// ComPtrを使用できるようにする
-#include <wrl/client.h>
-using Microsoft::WRL::ComPtr;
 
 //=========================================
 // Direct3Dクラス
@@ -43,15 +39,21 @@ public:
 	bool Initialize(HWND hWnd, int width, int height);
 
 	// 2D描画用のシェーダー
-	ComPtr<ID3D11VertexShader>	m_spriteVS = nullptr;	// 頂点シェーダー
-	ComPtr<ID3D11PixelShader>	m_spritePS = nullptr;	// ピクセルシェーダー
-	ComPtr<ID3D11InputLayout>	m_spriteInputLayout = nullptr;// 入力レイアウト
+	ComPtr<ID3D11VertexShader>	m_spriteVS = nullptr;			// 頂点シェーダー
+	ComPtr<ID3D11PixelShader>	m_spritePS = nullptr;			// ピクセルシェーダー
+	ComPtr<ID3D11InputLayout>	m_spriteInputLayout = nullptr;	// 入力レイアウト
+	ComPtr<ID3D11Buffer>		m_vbSquare;						// 四角形用頂点バッファ
 
-	//=========================================
-	// 今回このクラスは、どこからでもアクセスできるように
-	// シングルトンパターンにします
-	// ↓↓↓以下、シングルトンパターンのコード
-	//=========================================
+	// 2D描画モードにする
+	void ChangeMode_2D();
+	// 2D描画
+	// tex		: テクスチャ
+	// x		: x座標
+	// y		: y座標
+	// w		: 幅
+	// h		: 高さ
+	void Draw2D(const Texture& tex, float x, float y, float w, float h);
+
 private:
 	// 唯一のインスタンス用のポインタ
 	static inline Direct3D* s_instance;

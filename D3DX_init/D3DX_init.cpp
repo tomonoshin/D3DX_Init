@@ -1,5 +1,4 @@
 ﻿// D3DX_init.cpp : アプリケーションのエントリ ポイントを定義します。
-//
 
 #include "framework.h"
 #include "D3DX_init.h"
@@ -57,7 +56,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             //============================================
             // ウィンドウメッセージ処理
             //============================================
-            // 終了メッセージがきた
             if (msg.message == WM_QUIT) {
                 break;
             }
@@ -84,13 +82,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
-
-
+/*****************************************************************************/
+//  関数:
+//      MyRegisterClass()
 //
-//  関数: MyRegisterClass()
-//
-//  目的: ウィンドウ クラスを登録します。
-//
+//  目的:
+//      ウィンドウ クラスを登録します。
+/*****************************************************************************/
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -106,55 +104,76 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_D3DXINIT);
+    wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
 
+/*****************************************************************************/
+//   関数:
+//      InitInstance(HINSTANCE, int)
 //
-//   関数: InitInstance(HINSTANCE, int)
-//
-//   目的: インスタンス ハンドルを保存して、メイン ウィンドウを作成します
+//   目的:
+//      インスタンス ハンドルを保存して、メイン ウィンドウを作成します
 //
 //   コメント:
-//
 //        この関数で、グローバル変数でインスタンス ハンドルを保存し、
 //        メイン プログラム ウィンドウを作成および表示します。
-//
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-   hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
+/*****************************************************************************/
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    // グローバル変数にインスタンス ハンドルを格納する
+    hInst = hInstance;
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    HWND hWnd = CreateWindowW(szWindowClass,
+                              szTitle,
+                              WS_OVERLAPPEDWINDOW - WS_THICKFRAME,
+                              CW_USEDEFAULT,
+                              0,
+                              CW_USEDEFAULT,
+                              0,
+                              nullptr,
+                              nullptr,
+                              hInstance,
+                              nullptr);
 
-   // Direct3Dインスタンス作成
-   Direct3D::CreateInstance();
-   // Direct3D初期化
-   D3D.Initialize(hWnd, 1280, 720);
+    if (!hWnd) {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    // Direct3Dインスタンス作成
+    Direct3D::CreateInstance();
 
-   return TRUE;
+    // Direct3D初期化
+    D3D.Initialize(hWnd, 1280, 720);
+
+    // ウィンドウのクライアントサイズを設定
+    RECT rcWnd, rcClient;
+    GetWindowRect(hWnd, &rcWnd);
+    GetClientRect(hWnd, &rcClient);
+    int newWidth = (rcWnd.right - rcWnd.left) - (rcClient.right - rcClient.left) + 1280;
+    int newHeight = (rcWnd.bottom - rcWnd.top) - (rcClient.bottom - rcClient.top) + 720;
+    SetWindowPos(hWnd, NULL, 0, 0, newWidth, newHeight, SWP_NOMOVE | SWP_NOZORDER);
+
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+    return TRUE;
 }
 
+/*****************************************************************************/
+//  関数:
+//      WndProc(HWND, UINT, WPARAM, LPARAM)
 //
-//  関数: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  目的: メイン ウィンドウのメッセージを処理します。
+//  目的:
+//      メイン ウィンドウのメッセージを処理します。
 //
 //  WM_COMMAND  - アプリケーション メニューの処理
 //  WM_PAINT    - メイン ウィンドウを描画する
 //  WM_DESTROY  - 中止メッセージを表示して戻る
-//
-//
+/*****************************************************************************/
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -193,7 +212,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// バージョン情報ボックスのメッセージ ハンドラーです。
+/*****************************************************************************/
+// 関数:
+//      About(HWND, UINT, WPARAM, LPARAM)
+// 目的:
+//      バージョン情報ボックスのメッセージハンドラー
+/*****************************************************************************/
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
