@@ -1,2 +1,6 @@
-﻿  GameSystem.cpp
+﻿  D3DX_init.cpp
+  Direct3D.cpp
+C:\Users\tomo_\Desktop\D3DX_init\D3DX_init\Source\DirectX\Direct3D.cpp(142,5): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  GameSystem.cpp
+  コードを生成中...
   D3DX_init.vcxproj -> C:\Users\tomo_\Desktop\D3DX_init\x64\Debug\D3DX_init.exe
