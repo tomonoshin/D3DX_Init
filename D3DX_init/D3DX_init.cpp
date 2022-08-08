@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "D3DX_init.h"
 #include "Source/DirectX/Direct3D.h"
+#include "Source/Game/GameSystem.h"
 
 #define MAX_LOADSTRING 100
 
@@ -43,6 +44,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+    // ゲームシステム生成
+    GameSystem::CreateInstance();
+    // ゲームシステム初期設定
+    GAMESYS.Initialize();
+
     // ゲームループ
     while (1)
     {
@@ -65,13 +71,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         //============================================
         // ゲームの処理を書く
         //============================================
-        // 画面を青色で塗りつぶす
-        float color[4] = { 0.2f, 0.2f, 1.0f, 1.0f };
-        D3D.m_deviceContext->ClearRenderTargetView(D3D.m_backBufferView.Get(), color);
-
-        // バックバッファの内容を画面に表示
-        D3D.m_swapChain->Present(1, 0);
+        // ゲームシステムの処理を実行する
+        GAMESYS.Execute();
     }
+
+    // ゲームシステム削除
+    GameSystem::CreateInstance();
 
     // Direct3Dインスタンス削除
     Direct3D::DeleteInstance();

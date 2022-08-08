@@ -19,6 +19,9 @@
     <Filter Include="Source\DirectX">
       <UniqueIdentifier>{3c42b73e-1a43-4611-90bc-5400ed00acc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Game">
+      <UniqueIdentifier>{e89d9ac2-460c-4abc-b577-f33c59404209}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -36,6 +39,9 @@
     <ClInclude Include="Source\DirectX\Direct3D.h">
       <Filter>Source\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Game\GameSystem.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DX_init.cpp">
@@ -43,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="Source\DirectX\Direct3D.cpp">
       <Filter>Source\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\GameSystem.cpp">
+      <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
